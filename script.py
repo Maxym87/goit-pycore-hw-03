@@ -1,5 +1,5 @@
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import random
 import re
 
@@ -26,19 +26,6 @@ def get_numbers_ticket(min, max, quantity):
 # Task 3
 
 
-raw_numbers = [
-    "067\\t123 4567",
-    "(095) 234-5678\\n",
-    "+380 44 123 4567",
-    "380501234567",
-    "    +38(050)123-32-34",
-    "     0503451234",
-    "(050)8889900",
-    "38050-111-22-22",
-    "38050 111 22 11   ",
-]
-
-
 def normalize_phone(phone_number):
     pattern = r'[^0-9]'
     repl = ''
@@ -48,3 +35,24 @@ def normalize_phone(phone_number):
     else: formated_numbers = '+' + formated_numbers
     return formated_numbers
 
+# Task 4
+
+def get_upcoming_birthdays(users):
+    today = datetime.today().date()
+    upcoming_birthdays = []
+    for user in users:
+        birthday = datetime.strptime(user['birthday'], "%Y.%m.%d").date()
+        if birthday < today:
+            birthday = birthday.replace(year=today.year + 1)
+        else: 
+            birthday = birthday.replace(year=today.year)
+
+        if today <= birthday <= today + timedelta(days=7):
+            if birthday.weekday() == 5:
+                birthday += timedelta(days=2)
+            elif birthday.weekday() == 6:
+                birthday += timedelta(days=1)
+            
+            upcoming_birthdays.append({'name': user['name'], 'congratulation_date': birthday.strftime("%Y.%m.%d")})
+
+    return upcoming_birthdays
