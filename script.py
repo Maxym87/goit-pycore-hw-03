@@ -13,3 +13,12 @@ def get_days_from_today(date):
     except Exception as e:
         print(f'Сталася помилка: {e}')
 
+
+# Завдання 2
+
+def get_numbers_ticket(min, max, quantity):
+    if min < 1 or max > 1000 or not (min <= quantity <= max):
+        return []
+    selected_numbers = random.sample(range(min, max), quantity)
+    return selected_numbers
+
